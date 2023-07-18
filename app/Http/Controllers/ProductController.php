@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserTypeEnum;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Models\Product;
 use App\Traits\Fileable;
@@ -15,6 +16,12 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(10);
+        if (auth()->user()->type == UserTypeEnum::Seller->value) {
+            $products = Product::query()
+                ->filteredByCompany(auth()->user()->company_id)
+                ->with('user.company', 'mainImage')
+                ->paginate(10);
+        }
         return view('products.index', compact('products'));
     }
 
@@ -29,7 +36,7 @@ class ProductController extends Controller
         $images = $validatedRequest['images'];
         unset($validatedRequest['images']);
 
-       $product = auth()->user()->products()->create($validatedRequest);
+        $product = auth()->user()->products()->create($validatedRequest);
         //upload images
         $this->saveMultipleFiles($images, $product);
 
@@ -38,7 +45,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact('product'));
     }
 
     public function edit(Product $product)
