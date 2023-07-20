@@ -13,16 +13,12 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('products.update', ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     @include('partials.product-form')
-                    <div class="mb-3">
-                        <label for="images">Select Images:</label>
-                        <input type="file" name="images[]" multiple
-                               class="form-control-file @error('images') is-invalid @enderror" id="images">
-                    </div>
 
-                    <button type="submit" class="btn btn-dark">Create</button>
+                    <button type="submit" class="btn btn-dark">Save</button>
                 </form>
             </div>
         </div>
