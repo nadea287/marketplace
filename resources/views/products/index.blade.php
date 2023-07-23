@@ -44,12 +44,14 @@
                                         <td>5.2</td>
                                         <td>
                                             @can('update', $product)
-                                                <a href="{{ route('products.edit', ['product' => $product->id]) }}"class="text-decoration-none pe-2">Edit</a>
-                                                <button style="all: unset; cursor: pointer" class="text-danger delete-product"
+                                                <a href="{{ route('products.edit', ['product' => $product->id]) }}"
+                                                   class="text-decoration-none pe-2">Edit</a>
+                                            @endcan
+                                            @can('delete', $product)
+                                                <button style="all: unset; cursor: pointer"
+                                                        class="text-danger delete-product"
                                                         data-id="{{ $product->id }}">Delete
                                                 </button>
-                                            @else
-                                                --
                                             @endcan
                                         </td>
                                     </tr>

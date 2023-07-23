@@ -12,6 +12,8 @@
                         @can('update', $product)
                             <a href="{{ route('products.edit', ['product' => $product->id]) }}"
                                class="card-link">edit</a>
+                        @endcan
+                        @can('delete', $product)
                             <a href="#" class="card-link">delete</a>
                         @endcan
 
