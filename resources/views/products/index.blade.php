@@ -14,7 +14,7 @@
                             </div>
                         @endif
 
-                        <a href="{{ route('products.create') }}">Create Product</a>
+                        <a href="{{ route('products.create') }}" class="btn btn-sm btn-dark mb-4">Create Product</a>
 
                         <div class="table-responsive">
                             <table class="table table-hover align-items-center justify-content-center mb-0">
@@ -32,7 +32,7 @@
                                     <tr>
                                         <td class="w-50">
                                             <img
-                                                src="{{ asset('storage/products/' . $product->id . '/' . $product->mainImage->name) }}"
+                                                src="{{ \App\Classes\HelperClass::getFileForWeb($product, $product->mainImage?->name) }}"
                                                 alt="{{ $product->name }}" class="img-fluid w-25 h-25">
                                         </td>
                                         <td>
@@ -42,9 +42,17 @@
                                         </td>
                                         <td>{{ $product->user->company->name }}</td>
                                         <td>5.2</td>
-                                        <td></td>
+                                        <td>
+                                            @can('update', $product)
+                                                <a href="{{ route('products.edit', ['product' => $product->id]) }}"class="text-decoration-none pe-2">Edit</a>
+                                                <button style="all: unset; cursor: pointer" class="text-danger delete-product"
+                                                        data-id="{{ $product->id }}">Delete
+                                                </button>
+                                            @else
+                                                --
+                                            @endcan
+                                        </td>
                                     </tr>
-                                    here
                                 @endforeach
                                 </tbody>
                             </table>

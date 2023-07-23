@@ -1,6 +1,6 @@
 <?php
 return [
   'files' => [
-      'products' => 'public/products'
+      'products' => 'products'
   ]
 ];

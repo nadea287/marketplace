@@ -16,7 +16,14 @@
 <div class="col-md-6 mb-3">
     <select class="form-select" name="status" aria-label="Default select example">
         @foreach(\App\Enums\ProductStatusEnum::cases() as $status)
-            <option value="{{ $status->value }}" @selected($product->status == $status->value ?? old('status'))>{{ $status->name }}</option>
+            <option value="{{ $status->value }}" @selected((isset($product) && $product->status == $status->value) ?? old('status'))>{{ $status->name }}</option>
         @endforeach
     </select>
 </div>
+
+<div class="mb-3">
+    <label for="images">Select Images:</label>
+    <input type="file" name="images[]" multiple
+           class="form-control-file @error('images') is-invalid @enderror" id="images">
+</div>
+

@@ -75,6 +75,8 @@
 
         <main class="py-4">
             @yield('content')
+            <script src="{{ asset('js/jquery.js') }}"></script>
+            <script src="{{ asset('js/delete.js') }}"></script>
         </main>
     </div>
 </body>

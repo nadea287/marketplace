@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,4 @@ Auth::routes();
 
 //Route::get('/products', [ProductController::class, 'index'])->name('home');
 Route::resource('products', ProductController::class);
+Route::delete('images/{id}', [ImageController::class, 'destroy']);

@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\FileClass;
+use App\Classes\HelperClass;
 use App\Enums\UserTypeEnum;
 use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
-use App\Traits\Fileable;
-use Illuminate\Http\Request;
+use App\Services\FileService;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
-    use Fileable;
-
+    public function __construct()
+    {
+        $this->middleware('can:update,product')->only('edit', 'update');
+    }
 
     public function index()
     {
@@ -37,8 +42,7 @@ class ProductController extends Controller
         unset($validatedRequest['images']);
 
         $product = auth()->user()->products()->create($validatedRequest);
-        //upload images
-        $this->saveMultipleFiles($images, $product);
+        FileService::saveMultipleFiles($images, $product);
 
         return redirect()->route('products.index');
     }
@@ -54,13 +58,37 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $validatedRequest = $request->validated();
+        if (isset($validatedRequest['images'])) {
+            FileService::saveMultipleFiles($validatedRequest['images'], $product);
+            unset($validatedRequest['images']);
+        }
+        $product->update($validatedRequest);
+
+        return redirect()->route('products.index');
     }
 
-    public function destroy(Product $product)
+    public function destroy($product)
     {
-        //
+        if (!($DBProduct = Product::find($product))) {
+            return response()->json([
+                'data' => 'Product not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        if (request()->user()->cannot('delete', $DBProduct)) {
+            abort(403);
+        }
+
+        //delete physical files
+        FileClass::deleteDirectory(HelperClass::fetchFilePath(get_class($DBProduct)) . '/' . $DBProduct->id);
+        $DBProduct->images()->delete();
+        $DBProduct->delete();
+
+        return response()->json([
+            'data' => 'Product was deleted successfully!'
+        ], Response::HTTP_OK);
     }
 }
