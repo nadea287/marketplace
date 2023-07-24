@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
             $table->tinyInteger('rating');
-            $table->string('comment', 200);
+            $table->text('comment');
             $table->boolean('status');
 
             $table->index(['status']);

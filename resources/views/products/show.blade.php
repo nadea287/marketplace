@@ -38,6 +38,51 @@
                     </div>
                 </div>
             </div>
+
+            {{--            reviews--}}
+            @if($product->canUserRateProduct($product->id))
+                <div class="col-md-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <form action="{{ route('reviews.store', ['product' => $product]) }}" method="POST">
+                                @csrf
+                                <div class="col-md-3 mb-3">
+                                    <label for="rating" class="form-label">Rating</label>
+                                    <input type="number" name="rating" value="{{ old('rating') }}" class="form-control"
+                                           id="rating">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="comment" class="form-label">Comment</label>
+                                    <textarea name="comment" class="form-control" id="comment"
+                                              rows="3">{{ old('comment') }}</textarea>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <select class="form-select" name="status" aria-label="Default select example">
+                                        @foreach(\App\Enums\ReviewStatusEnum::cases() as $status)
+                                            <option
+                                                value="{{ $status->value }}" @selected(old('status'))>{{ $status->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-sm btn-dark">Save</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            @endif
+            {{--            end review form--}}
         </div>
     </div>
 @endsection

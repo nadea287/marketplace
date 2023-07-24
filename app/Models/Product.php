@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\ProductModelTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Product extends Model
 {
     use HasFactory;
+    use ProductModelTrait;
 
     protected $fillable = [
         'user_id',
@@ -34,6 +37,11 @@ class Product extends Model
     public function mainImage(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function scopeFilteredByCompany(Builder $query, int|string $companyId): void

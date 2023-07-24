@@ -11,7 +11,7 @@ class UniqueCompanyNameRule implements ValidationRule
 {
     public function __construct(
         private string $userType,
-        private string $companyName
+        private ?string $companyName
     )
     {
     }

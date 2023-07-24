@@ -65,7 +65,6 @@
                                            class="form-control @error('company_name') is-invalid @enderror"
                                            name="company_name"
                                            value="{{ old('company_name') }}"
-                                           required
                                     >
 
                                     @error('company_name')
@@ -84,7 +83,6 @@
                                     <input id="CUI" type="text"
                                            class="form-control @error('CUI') is-invalid @enderror" name="CUI"
                                            value="{{ old('CUI') }}"
-                                           required
                                     >
 
                                     @error('CUI')
