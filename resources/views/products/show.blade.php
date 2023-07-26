@@ -83,6 +83,50 @@
                 </div>
             @endif
             {{--            end review form--}}
+
+            {{--            reviews start--}}
+            <div class="col-md-12 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <section>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-10 col-xl-8 text-center">
+                                    <h3 class="mb-4">Reviews</h3>
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                @foreach($product->reviews as $review)
+
+                                    <div class="col-md-4 mb-5 mb-md-0">
+                                        <h5 class="mb-3">{{ $review->user->name }}</h5>
+                                        <h6 class="text-danger mb-3">{{ $review->rating }} stars</h6>
+                                        <p class="px-xl-3">{{ $review->comment }}</p>
+                                        {{--<ul class="list-unstyled d-flex justify-content-center mb-0">
+                                            <li>
+                                                <i class="fas fa-star fa-sm text-warning"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-sm text-warning"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-sm text-warning"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star fa-sm text-warning"></i>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star-half-alt fa-sm text-warning"></i>
+                                            </li>
+                                        </ul>--}}
+                                    </div>
+
+                                @endforeach
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

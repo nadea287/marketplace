@@ -49,7 +49,14 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load('images');
+        //todo: create scope
+        $product->load([
+            'images',
+            'reviews.user',
+            'reviews' => function($q) {
+                $q->where('status', 1);
+            }
+        ]);
         return view('products.show', compact('product'));
     }
 
